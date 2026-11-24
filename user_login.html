@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login User - TMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; min-height: 100vh; display: flex; align-items: center; }
+        .login-card { border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .icon-header { width: 80px; height: 80px; background: linear-gradient(135deg, #4f46e5, #0ea5e9); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+        .btn-primary { background: #4f46e5; border: none; }
+        .btn-primary:hover { background: #4338ca; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card login-card p-4">
+                    <div class="text-center mb-4">
+                        <div class="icon-header">
+                            <i class="fas fa-user text-white fa-2x"></i>
+                        </div>
+                        <h3 class="fw-bold">Login User</h3>
+                        <p class="text-muted">Masuk untuk mengelola tiket Anda</p>
+                    </div>
+                    
+                    <!-- Alert Error -->
+                    <div id="errorAlert" class="alert alert-danger d-none" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i><span id="errorMsg"></span>
+                    </div>
+
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="fas fa-envelope text-muted"></i></span>
+                                <input type="email" class="form-control" id="email" placeholder="user@tms.com" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="fas fa-lock text-muted"></i></span>
+                                <input type="password" class="form-control" id="password" placeholder="user123" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-bold">
+                            <i class="fas fa-sign-in-alt me-2"></i>Masuk
+                        </button>
+                    </form>
+                    
+                    <div class="text-center mt-3">
+                        <small class="text-muted">Belum punya akun? <a href="#" class="text-decoration-none">Daftar</a></small>
+                    </div>
+                    
+                    <!-- Info Akun Demo -->
+                    <div class="alert alert-info mt-4 mb-0 small">
+                        <strong><i class="fas fa-info-circle me-1"></i>Akun Demo User:</strong><br>
+                        Email: <code>user@tms.com</code><br>
+                        Password: <code>user123</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const errorAlert = document.getElementById('errorAlert');
+            const errorMsg = document.getElementById('errorMsg');
+            
+            // Data akun user (simulasi)
+            const validUser = {
+                email: 'user@tms.com',
+                password: 'user123',
+                role: 'user',
+                name: 'Budi Santoso'
+            };
+            
+            // Validasi
+            if (email === validUser.email && password === validUser.password) {
+                // Simpan sesi login ke localStorage
+                localStorage.setItem('tms_logged_in', 'true');
+                localStorage.setItem('tms_role', validUser.role);
+                localStorage.setItem('tms_user_name', validUser.name);
+                localStorage.setItem('tms_user_email', validUser.email);
+                
+                // Redirect ke dashboard user
+                window.location.href = 'user_dashboard.html';
+            } else {
+                errorMsg.innerText = 'Email atau password salah! Gunakan akun demo yang tersedia.';
+                errorAlert.classList.remove('d-none');
+            }
+        });
+    </script>
+</body>
+</html>

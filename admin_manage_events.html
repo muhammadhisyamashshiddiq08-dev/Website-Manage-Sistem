@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Event - TMS Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/admin_manage_events.css">
+</head>
+<body>
+
+    <div class="d-flex">
+        <!-- ================= SIDEBAR ADMIN ================= -->
+        <div class="sidebar d-flex flex-column flex-shrink-0 p-3" style="width: 250px;">
+            <a href="admin_dashboard.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <i class="fas fa-user-shield text-primary me-2 fs-4"></i>
+                <span class="fs-5 fw-bold" id="adminName">TMS Admin</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="admin_dashboard.html" class="nav-link">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin_manage_events.html" class="nav-link active">
+                        <i class="fas fa-calendar-alt"></i> Kelola Event
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin_manage_users.html" class="nav-link">
+                        <i class="fas fa-users"></i> Kelola User
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <a href="#" class="nav-link text-danger" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <div class="flex-grow-1 p-4 bg-light">
+
+            <!-- Header Halaman -->
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <div>
+                    <h2 class="fw-bold mb-1">Manajemen Event</h2>
+                    <p class="text-muted small mb-0">Kelola semua data event di sini</p>
+                </div>
+                <!-- Tombol Tambah Event -->
+                <button class="btn btn-primary rounded-pill px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahEventModal">
+                    <i class="fas fa-plus me-2"></i>Tambah Event
+                </button>
+            </div>
+
+            <!-- Tabel Event -->
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="text-center" style="width: 50px;">No</th>
+                                <th scope="col" class="text-center" style="width: 80px;">Gambar</th>
+                                <th scope="col">Nama Event</th>
+                                <th scope="col">Kategori</th>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Harga</th>
+                                <th scope="col" class="text-center" style="width: 120px;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <!-- Tbody ini akan diisi oleh JavaScript (js/script.js) -->
+                        <tbody id="eventsTableBody">
+                            <!-- Data dummy dirender otomatis oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL TAMBAH EVENT ================= -->
+    <div class="modal fade" id="tambahEventModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="fas fa-plus-circle me-2"></i>Tambah Event Baru</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formTambahEvent" onsubmit="submitTambahEvent(event)">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nama Event</label>
+                            <input type="text" class="form-control" id="tambahNama" placeholder="Contoh: Konser Rock 2026" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Kategori</label>
+                            <select class="form-select" id="tambahKategori" required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="Konser">Konser</option>
+                                <option value="Seminar">Seminar</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Festival">Festival</option>
+                                <option value="Pameran">Pameran</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Tanggal</label>
+                                <input type="date" class="form-control" id="tambahTanggal" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Harga (Rp)</label>
+                                <input type="number" class="form-control" id="tambahHarga" placeholder="100000" required>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2 mt-3">
+                            <button type="submit" class="btn btn-primary rounded-pill py-2 fw-bold">
+                                <i class="fas fa-save me-2"></i>Simpan Event
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL EDIT EVENT ================= -->
+    <div class="modal fade" id="editEventModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Edit Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditEvent" onsubmit="submitEditEvent(event)">
+                        <input type="hidden" id="editId">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nama Event</label>
+                            <input type="text" class="form-control" id="editNama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Kategori</label>
+                            <select class="form-select" id="editKategori" required>
+                                <option value="Konser">Konser</option>
+                                <option value="Seminar">Seminar</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Festival">Festival</option>
+                                <option value="Pameran">Pameran</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Tanggal</label>
+                                <input type="date" class="form-control" id="editTanggal" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Harga (Rp)</label>
+                                <input type="number" class="form-control" id="editHarga" required>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2 mt-3">
+                            <button type="submit" class="btn btn-warning rounded-pill py-2 fw-bold text-dark">
+                                <i class="fas fa-save me-2"></i>Update Event
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL KONFIRMASI HAPUS ================= -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-trash-alt text-danger display-4 mb-3"></i>
+                    <h5>Apakah Anda yakin?</h5>
+                    <p class="text-muted">Anda akan menghapus event <strong id="deleteEventName"></strong>. Tindakan ini tidak dapat dibatalkan.</p>
+                </div>
+                <div class="modal-footer justify-content-center border-0 pb-4">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger rounded-pill px-4" onclick="executeDelete()">Ya, Hapus!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS (semua logika ada di sini) -->
+    <script src="js/script.js"></script>
+</body>
+</html>
